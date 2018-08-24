@@ -1,0 +1,35 @@
+{
+  "name": "graphql-node-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development node_modules/.bin/nodemon --delay 5 dist/index",
+    "gulp": "node_modules/.bin/gulp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.1",
+    "@types/express": "4.16.0",
+    "@types/express-graphql": "^0.6.1",
+    "@types/graphql": "^0.13.4",
+    "@types/node": "10.7.1",
+    "@types/sequelize": "4.0.76",
+    "gulp": "^4.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "nodemon": "^1.18.3",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "4.16.3",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.13.2",
+    "graphql-tools": "^3.1.1",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.38.0"
+  }
+}
