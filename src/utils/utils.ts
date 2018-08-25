@@ -5,7 +5,7 @@ export const normalizePort = (val: number | string): number | string | boolean =
     if (isNaN(port)) return val;
     else if (port >= 0) return port;
     else return false;
-}
+};
 
 export const onError = (port) => {
     return (error: NodeJS.ErrnoException): void => {
@@ -24,7 +24,7 @@ export const onError = (port) => {
                 throw error;
         }
     }
-}
+};
 
 export const onListening = (server: Server) => {
     return (): void => {
@@ -32,4 +32,10 @@ export const onListening = (server: Server) => {
         let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
         console.log(`Listening at ${bind}...`);
     }
-}
+};
+
+export const handleError = (error: Error) => {
+    let errorMessage: string = `${error.name}: ${error.message}`;
+    console.log(errorMessage);
+    return Promise.reject(new Error(errorMessage));
+};
