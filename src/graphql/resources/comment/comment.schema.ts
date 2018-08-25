@@ -22,7 +22,7 @@ const commentQueries = `
 const commentMutations = `
     createComment(input: CommentInput!): Comment
     updateComment(id: ID!, input: CommentInput!): Comment
-    deleteCOmment(id: ID!): Boolean
+    deleteComment(id: ID!): Boolean
 `;
 
 export {
