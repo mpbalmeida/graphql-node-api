@@ -1,5 +1,5 @@
 const tokenTypes = `
-    tyoe Token {
+    type Token {
         token: String!
     }
 `;
