@@ -1,4 +1,5 @@
-import { Server } from "http";
+import {Server} from "http";
+import mergeSchemas from "graphql-tools/dist/stitching/mergeSchemas";
 
 export const normalizePort = (val: number | string): number | string | boolean => {
     let port: number = (typeof val === 'string') ? parseInt(val) : val;
@@ -11,7 +12,7 @@ export const onError = (port) => {
     return (error: NodeJS.ErrnoException): void => {
         if (error.syscall !== 'listen') throw error;
         let bind = (typeof port === 'string') ? `pipe ${port}` : `port ${port}`;
-        switch(error.code) {
+        switch (error.code) {
             case 'EACCES':
                 console.error(`${bind} requires elevated privileges`);
                 process.exit(1);
@@ -38,6 +39,12 @@ export const handleError = (error: Error) => {
     let errorMessage: string = `${error.name}: ${error.message}`;
     console.log(errorMessage);
     return Promise.reject(new Error(errorMessage));
+};
+
+export const throwError = (condition: boolean, message: string): void => {
+    if (condition) {
+        throw new Error(message);
+    }
 };
 
 export const JWT_SECRET: string = process.env.JWT_SECRET;
