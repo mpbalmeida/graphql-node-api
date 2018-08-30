@@ -17,7 +17,7 @@ export interface CommentInstance extends Sequelize.Instance<CommentAttributes> {
 export interface CommentModel extends BaseModelInterface, Sequelize.Model<CommentInstance, CommentAttributes> {}
 
 export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes): CommentModel => {
-    const Comment: CommentModel = <CommentModel> sequelize.define('comment', {
+    const Comment: CommentModel = <CommentModel> sequelize.define('Comment', {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -37,7 +37,7 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             foreignKey: {
                 allowNull: false,
                 field: 'post',
-                name: 'comment_post'
+                name: 'post'
             }
         });
 
@@ -45,7 +45,7 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             foreignKey: {
                 allowNull: false,
                 field: 'user',
-                name: 'comment_user'
+                name: 'user'
             }
         });
     };

@@ -6,32 +6,33 @@ import {handleError, throwError} from "../../../utils/utils";
 import {compose} from "../../composable/composable.resolver";
 import {authResolvers} from "../../composable/auth.resolver";
 import {AuthUser} from "../../../interfaces/AuthUserInterface";
+import {DataLoaders} from "../../../interfaces/DataLoadersInterface";
 
 export const commentResolvers = {
 
     Comment: {
-        user: (comment: CommentInstance, args, {db}: { db: DbConnection }, info: GraphQLResolveInfo) => {
-            return db.User
-                .findById(comment.get('user'))
+        user: (comment: CommentInstance, args, {db, dataLoaders: {userLoader}}: { db: DbConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
+            console.log(comment);
+            return userLoader
+                .load(comment.get('user'))
                 .catch(handleError);
         },
 
-        post: (comment: CommentInstance, args, {db}: { db: DbConnection }, info: GraphQLResolveInfo) => {
-            return db.Post
-                .findById(comment.get('post'))
+        post: (comment: CommentInstance, args, {db, dataLoaders: {postLoader}}: { db: DbConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
+            console.log(comment);
+            return postLoader
+                .load(comment.get('post'))
                 .catch(handleError);
         }
 
     },
 
     Query: {
-        commentsByPost: (parent, {postId, first = 10, offset = 0}, {db}: { db: DbConnection }, info: GraphQLResolveInfo) => {
+        commentsByPost: (parent, {postId}, {db}: { db: DbConnection }, info: GraphQLResolveInfo) => {
             postId = parseInt(postId);
             return db.Comment
                 .findAll({
                     where: {post: postId},
-                    limit: first,
-                    offset: offset
                 })
                 .catch(handleError);
         }

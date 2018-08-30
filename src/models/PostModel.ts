@@ -49,7 +49,7 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             foreignKey: {
                 allowNull: false,
                 field: 'author',
-                name: 'post_author'
+                name: 'author'
             }
         });
     };
