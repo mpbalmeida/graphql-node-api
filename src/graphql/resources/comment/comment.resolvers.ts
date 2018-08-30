@@ -7,6 +7,7 @@ import {compose} from "../../composable/composable.resolver";
 import {authResolvers} from "../../composable/auth.resolver";
 import {AuthUser} from "../../../interfaces/AuthUserInterface";
 import {DataLoaders} from "../../../interfaces/DataLoadersInterface";
+import {ResolverContext} from "../../../interfaces/ResolverContextInterface";
 
 export const commentResolvers = {
 
@@ -28,11 +29,12 @@ export const commentResolvers = {
     },
 
     Query: {
-        commentsByPost: (parent, {postId}, {db}: { db: DbConnection }, info: GraphQLResolveInfo) => {
+        commentsByPost: (parent, {postId}, context: ResolverContext, info: GraphQLResolveInfo) => {
             postId = parseInt(postId);
-            return db.Comment
+            return context.db.Comment
                 .findAll({
                     where: {post: postId},
+                    attributes: context.requestedFields.getFields(info)
                 })
                 .catch(handleError);
         }
