@@ -16,7 +16,7 @@ export const postResolvers = {
     Post: {
         author: (post: PostInstance, args, {db, dataLoaders: {userLoader}}: { db: DbConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
             return userLoader
-                .load(post.get('author'))
+                .load({key: post.get('author'), info})
                 .catch(handleError);
         },
         comments: (post: PostInstance, {first = 10, offset = 0}, context: ResolverContext, info: GraphQLResolveInfo) => {

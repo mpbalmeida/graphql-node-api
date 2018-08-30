@@ -13,16 +13,14 @@ export const commentResolvers = {
 
     Comment: {
         user: (comment: CommentInstance, args, {db, dataLoaders: {userLoader}}: { db: DbConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
-            console.log(comment);
             return userLoader
-                .load(comment.get('user'))
+                .load({key: comment.get('user'), info})
                 .catch(handleError);
         },
 
         post: (comment: CommentInstance, args, {db, dataLoaders: {postLoader}}: { db: DbConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
-            console.log(comment);
             return postLoader
-                .load(comment.get('post'))
+                .load({key: comment.get('post'), info})
                 .catch(handleError);
         }
 
