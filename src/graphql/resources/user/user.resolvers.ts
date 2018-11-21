@@ -59,13 +59,12 @@ export const userResolvers = {
                 return db.User.create(args.input, {transaction: t});
             }).catch(handleError);
         },
-        updateUser: compose(...authResolvers)((parent, {input}, {db, authUser}: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
+        updateUser: compose(...authResolvers)((parent, {input}, {db, authUser}: {db: DbConnection, authUser: AuthUser}, info: GraphQLResolveInfo) => {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.User
                     .findById(authUser.id)
                     .then((user: UserInstance) => {
                         throwError(!user, `User with id ${authUser.id} not found!`);
-
                         return user.update(input, {transaction: t});
                     });
             }).catch(handleError);
