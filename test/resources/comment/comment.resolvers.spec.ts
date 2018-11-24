@@ -77,9 +77,7 @@ describe('Comment', () => {
                                 }
                             }
                         `, variables: {
-                            postId,
-                            first: 2,
-                            offset: 1
+                            postId
                         }
                     };
 
@@ -92,12 +90,14 @@ describe('Comment', () => {
                             expect(res.body.data).to.be.an('object');
                             expect(commentList).to.be.an('array');
                             expect(commentList[0]).to.not.have.keys(['id', 'createdAt', 'updatedAt']);
-                            expect(commentList[0].comment).to.equal('Second comment');
+                            expect(commentList[0].comment).to.equal('First comment');
                             expect(commentList[0]).to.have.keys(['comment', 'user', 'post']);
                             expect(parseInt(commentList[0].user.id)).to.equal(userId);
                             expect(parseInt(commentList[0].post.id)).to.equal(postId);
                         }).catch(handleError);
                 });
+
+
             });
         });
     });

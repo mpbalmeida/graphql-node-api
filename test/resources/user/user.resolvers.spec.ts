@@ -110,6 +110,9 @@ describe('User', () => {
                                 user(id: $id) {
                                     name
                                     email
+                                    posts {
+                                        id
+                                    }
                                 }
                             }
                         `,
@@ -156,6 +159,62 @@ describe('User', () => {
                             expect(res.body).to.have.keys(['data', 'errors']);
                             expect(res.body.errors[0].message).to.equal('Error: User with id -1 not found!');
                         }).catch(handleError);
+                });
+
+                it('should error if user does not exists', () => {
+
+                    const body = {
+                        query: `
+                            query getSingleUser($id: ID!){
+                                user(id: $id) {
+                                    name
+                                    email
+                                }
+                            }
+                        `,
+                        variables: {
+                            id : -1
+                        }
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            expect(res.body.data.user).to.be.null;
+                            expect(res.body.errors).to.be.an('array');
+                            expect(res.body).to.have.keys(['data', 'errors']);
+                            expect(res.body.errors[0].message).to.equal('Error: User with id -1 not found!');
+                        }).catch(handleError);
+                });
+
+                describe('currentUser', () => {
+                    it('should return the User owner of the Token', () => {
+
+                        const body = {
+                            query: `
+                            query {
+                                currentUser {
+                                    name
+                                    email
+                                }
+                            }
+                        `
+                        };
+
+                        return chai.request(app)
+                            .post('/graphql')
+                            .set('content-type', 'application/json')
+                            .set('authorization', `Bearer ${token}`)
+                            .send(JSON.stringify(body))
+                            .then(res => {
+                                const currentUser = res.body.data.currentUser;
+                                expect(currentUser).to.be.an('object');
+                                expect(currentUser).to.have.keys(['name', 'email']);
+                                expect(currentUser.name).to.equal('Test User')
+                            }).catch(handleError);
+                    });
                 });
             });
         });
@@ -314,6 +373,25 @@ describe('User', () => {
                         .send(JSON.stringify(body))
                         .then(res => {
                             expect(res.body.data.deleteUser).to.be.true;
+                        }).catch(handleError);
+                });
+
+                it('should block operation if token is not provided', () => {
+
+                    let body = {
+                        query: `
+                            mutation {
+                                deleteUser
+                            }
+                        `
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            expect(res.body.errors[0].message).to.be.equal('Unauthorized! Token not provided!');
                         }).catch(handleError);
                 });
             });
