@@ -45,7 +45,7 @@ export const postResolvers = {
             id = parseInt(id);
             return context.db.Post
                 .findById(id, {
-                    attributes: context.requestedFields.getFields(info, {keep: ['id'], exclude: ['posts']})
+                    attributes: context.requestedFields.getFields(info, {keep: ['id'], exclude: ['comments']})
                 })
                 .then((post: PostInstance) => {
                     throwError(!post, `Post with id ${id} not found`);
