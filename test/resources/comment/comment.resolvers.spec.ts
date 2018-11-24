@@ -101,4 +101,116 @@ describe('Comment', () => {
             });
         });
     });
+
+    describe('Mutations', () => {
+        describe('application/json', () => {
+            describe('createComment', () => {
+                it('should create a new Comment', () => {
+                    const body = {
+                        query: `
+                            mutation createNewComment($input: CommentInput!){
+                                createComment(input: $input) {
+                                    id
+                                    comment
+                                    user {
+                                        id
+                                        name
+                                    }
+                                    post {
+                                        id
+                                        title
+                                    }
+                                }
+                            }
+                        `, variables: {
+                            input: {
+                                comment: 'Fourth comment',
+                                post: postId
+                            }
+                        }
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .set('authorization', `Bearer ${token}`)
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            const comment = res.body.data.createComment;
+                            expect(comment).to.be.an('object');
+                            expect(comment).to.have.keys(['id', 'comment', 'user', 'post']);
+                            expect(comment.comment).to.equal('Fourth comment');
+                            expect(parseInt(comment.user.id)).to.equal(userId);
+                            expect(parseInt(comment.post.id)).to.equal(postId);
+                        }).catch(handleError);
+                });
+            });
+
+            describe('updateComment', () => {
+                it('should update a Comment', () => {
+                    const body = {
+                        query: `
+                            mutation updateComment($id: ID!, $input: CommentInput!){
+                                updateComment(id: $id, input: $input) {
+                                    comment
+                                    user {
+                                        id
+                                        name
+                                    }
+                                    post {
+                                        id
+                                        title
+                                    }
+                                }
+                            }
+                        `, variables: {
+                            id: commentId,
+                            input: {
+                                comment: 'Updated comment',
+                                post: postId
+                            }
+                        }
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .set('authorization', `Bearer ${token}`)
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            const comment = res.body.data.updateComment;
+                            expect(comment).to.be.an('object');
+                            expect(comment).to.have.keys(['comment', 'user', 'post']);
+                            expect(comment.comment).to.equal('Updated comment');
+                            expect(parseInt(comment.user.id)).to.equal(userId);
+                            expect(parseInt(comment.post.id)).to.equal(postId);
+                        }).catch(handleError);
+                });
+            });
+
+            describe('deleteComment', () => {
+                it('should delete a Comment', () => {
+                    const body = {
+                        query: `
+                            mutation deleteComment($id: ID!){
+                                deleteComment(id: $id)
+                            }
+                        `, variables: {
+                            id: commentId
+                        }
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .set('authorization', `Bearer ${token}`)
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            expect(res.body.data).to.have.key('deleteComment');
+                            expect(res.body.data.deleteComment).to.be.true;
+                        }).catch(handleError);
+                });
+            });
+        });
+    });
 });
