@@ -18,9 +18,9 @@ if (!db) {
     config = Object.assign({operatorsAliases}, config);
 
     const sequelize: Sequelize.Sequelize = new Sequelize(
-        config.database,
-        config.username,
-        config.password,
+        env === 'production' ? process.env.DATABASE_URL : config.database,
+        env === 'production' ? process.env.DATABASE_USERNAME : config.username,
+        env === 'production' ? process.env.DATABASE_PASSWORD : config.password,
         config
     );
 
