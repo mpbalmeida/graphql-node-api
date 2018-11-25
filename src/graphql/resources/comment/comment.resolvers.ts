@@ -50,7 +50,7 @@ export const commentResolvers = {
         updateComment: compose(...authResolvers)((parent, {id, input}, {db, authUser}: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
             id = parseInt(id);
             return db.sequelize.transaction((t: Transaction) => {
-                return db.Comment.findById(id)
+                return db.Comment.findByPk(id)
                     .then((comment: CommentInstance) => {
                         throwError(!comment, `Commend with id ${id} not fount`);
                         throwError(comment.get('user') != authUser.id, `Unauthorized! You can only edit comments by yourself!`);
@@ -63,13 +63,14 @@ export const commentResolvers = {
         deleteComment: compose(...authResolvers)((parent, {id}, {db, authUser}: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
             id = parseInt(id);
             return db.sequelize.transaction((t: Transaction) => {
-                return db.Comment.findById(id)
+                return db.Comment.findByPk(id)
                     .then((comment: CommentInstance) => {
                         throwError(!comment, `Commend with id ${id} not fount`);
                         throwError(comment.get('user') != authUser.id, `Unauthorized! You can only delete comments by yourself!`);
 
                         return comment.destroy({transaction: t})
-                            .then(comment => !!comment);
+                            .then(() => true)
+                            .catch(() => false);
                     });
             }).catch(handleError);
         })

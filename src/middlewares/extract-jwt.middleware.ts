@@ -19,7 +19,7 @@ export const extractJwtMiddleware = (): RequestHandler => {
 
         jwt.verify(token, JWT_SECRET, (err, decoded: any) => {
             if (err) { return next(); }
-            db.User.findById(decoded.sub, {
+            db.User.findByPk(decoded.sub, {
                 attributes: ['id', 'email']
             }).then((user: UserInstance) => {
                 if (user) {

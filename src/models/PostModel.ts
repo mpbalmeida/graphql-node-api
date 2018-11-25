@@ -44,7 +44,7 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
         tableName: 'posts'
     });
 
-    Post.associate = (models: ModelsInterface): void => {
+    Post.associate = (models): void => {
         Post.belongsTo(models.User, {
             foreignKey: {
                 allowNull: false,
