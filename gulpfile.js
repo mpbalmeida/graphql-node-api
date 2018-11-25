@@ -1,10 +1,16 @@
 const gulp = require('gulp');
 const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
+const fs = require('fs');
 
 const tsProject = ts.createProject('tsconfig.json');
 
 gulp.task('clean', () => {
+    if(!fs.existsSync('dist')) {
+        fs.mkdirSync('dist');
+        console.log('📁  folder created:', 'dist');
+    }
+
     return gulp
         .src('dist')
         .pipe(clean());
