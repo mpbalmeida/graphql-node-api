@@ -13,6 +13,9 @@
     "circleci": "NODE_ENV=circleci JWT_SECRET=jwt_pipelines mocha",
     "coverage": "nyc --extension .ts --include 'src/**/*.ts' --reporter html npm test"
   },
+  "engines": {
+    "node": "10.13.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
