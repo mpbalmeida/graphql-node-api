@@ -10,6 +10,7 @@
     "dev": "NODE_ENV=development JWT_SECRET=jwt_secret node_modules/.bin/nodemon --delay 5 dist/index",
     "gulp": "node_modules/.bin/gulp",
     "test": "NODE_ENV=test JWT_SECRET=jwt_test mocha",
+    "circleci": "NODE_ENV=circleci JWT_SECRET=jwt_pipelines mocha",
     "coverage": "nyc --extension .ts --include 'src/**/*.ts' --reporter html npm test"
   },
   "keywords": [],
