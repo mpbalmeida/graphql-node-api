@@ -16,13 +16,15 @@ if (!db) {
     };
 
     config = Object.assign({operatorsAliases}, config);
-    
+
     if (env === 'production') {
         config.database = process.env.DATABASE_SCHEMA;
         config.username = process.env.DATABASE_USERNAME;
         config.password = process.env.DATABASE_PASSWORD;
         config.host = process.env.DATABASE_URL;
     }
+
+    console.log(config);
 
     const sequelize: Sequelize.Sequelize = new Sequelize(
         config.database,
