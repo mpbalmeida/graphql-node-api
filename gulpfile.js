@@ -31,3 +31,5 @@ gulp.task('watch', gulp.series('build', () => {
 }));
 
 gulp.task('default', gulp.series('watch'));
+
+gulp.task('heroku', gulp.series('build'));
