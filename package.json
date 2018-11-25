@@ -11,7 +11,8 @@
     "gulp": "node_modules/.bin/gulp",
     "test": "NODE_ENV=test JWT_SECRET=jwt_test mocha",
     "circleci": "NODE_ENV=circleci JWT_SECRET=jwt_pipelines mocha",
-    "coverage": "nyc --extension .ts --include 'src/**/*.ts' --reporter html npm test"
+    "coverage": "nyc --extension .ts --include 'src/**/*.ts' --reporter html npm test",
+    "postinstall": "npm run gulp build"
   },
   "engines": {
     "node": "10.13.0"
